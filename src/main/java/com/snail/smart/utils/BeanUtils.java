@@ -43,11 +43,12 @@ public class BeanUtils {
     public static void main(String[] args){
         RoomParam param = new RoomParam();
         param.setClient_sys("android");
-        param.setLimit(100);
+        param.setLimit(10);
         param.setOffset(0);
 
 
         String url = RoomApiEnum.ALL_LIVE.getApi()+"?"+toParam(param);
-        HttpUtils.get(url);
+        String result = HttpUtils.get(url);
+        logger.info("result = "+result);
     }
 }

@@ -16,7 +16,9 @@ import org.slf4j.LoggerFactory;
 public class HttpUtils {
     public static final Logger logger = LoggerFactory.getLogger(HttpUtils.class);
 
-    public static void get(String url){
+    public static String get(String url){
+        String result = null;
+
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpGet httpGet = new HttpGet(url);
         CloseableHttpResponse response = null;
@@ -24,8 +26,7 @@ public class HttpUtils {
         try{
             response = httpClient.execute(httpGet);
             HttpEntity entity = response.getEntity();
-
-            logger.info(EntityUtils.toString(entity));
+            result = StringUtils.decodeUnicode(EntityUtils.toString(entity));
         }catch (Exception e){
             logger.error("http get error,msg={}",e);
         }finally {
@@ -35,5 +36,7 @@ public class HttpUtils {
                 logger.error("close http response error,msg={}",e);
             }
         }
+
+        return result;
     }
 }
