@@ -2,12 +2,16 @@ package com.snail.smart.enums;
 
 /**
  * @author snail
- * @create 2017/04/21
+ * @create 2017/04/24
  */
-public enum RoomApiEnum {
+public enum DouYuApiEnum {
+    //栏目分类行功
+    FIRST_CATEGORY("http://capi.douyucdn.cn/api/v1/getColumnList","一级分类列表"),
+
+    //直播相关
     ALL_LIVE("http://capi.douyucdn.cn/api/v1/live","全部直播");
 
-    RoomApiEnum(String api,String msg){
+    DouYuApiEnum(String api,String msg){
         this.api = api;
         this.msg = msg;
     }

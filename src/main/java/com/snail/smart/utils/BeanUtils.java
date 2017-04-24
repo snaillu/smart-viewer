@@ -1,6 +1,6 @@
 package com.snail.smart.utils;
 
-import com.snail.smart.enums.RoomApiEnum;
+import com.snail.smart.enums.DouYuApiEnum;
 import com.snail.smart.vo.RoomParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +47,7 @@ public class BeanUtils {
         param.setOffset(0);
 
 
-        String url = RoomApiEnum.ALL_LIVE.getApi()+"?"+toParam(param);
+        String url = DouYuApiEnum.ALL_LIVE.getApi()+"?"+toParam(param);
         String result = HttpUtils.get(url);
         logger.info("result = "+result);
     }
