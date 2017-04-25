@@ -5,11 +5,16 @@ package com.snail.smart.enums;
  * @create 2017/04/24
  */
 public enum DouYuApiEnum {
+    //个人相关
+    LOGIN("http://capi.douyucdn.cn/api/v1/login","登录"),
+
     //栏目分类行功
     FIRST_CATEGORY("http://capi.douyucdn.cn/api/v1/getColumnList","一级分类列表"),
 
     //直播相关
     ALL_LIVE("http://capi.douyucdn.cn/api/v1/live","全部直播");
+
+
 
     DouYuApiEnum(String api,String msg){
         this.api = api;

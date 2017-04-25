@@ -17,6 +17,14 @@ public class ServiceResponse<T> {
         this.msg = ResponseCodeEnum.SUCCESS.getMsg();
     }
 
+    public static ServiceResponse failResponse(){
+        ServiceResponse response = new ServiceResponse();
+        response.setCode(ResponseCodeEnum.FAIL.getCode());
+        response.setMsg(ResponseCodeEnum.FAIL.getMsg());
+
+        return response;
+    }
+
 
     public int getCode() {
         return code;
@@ -40,5 +48,14 @@ public class ServiceResponse<T> {
 
     public void setResult(T result) {
         this.result = result;
+    }
+
+    @Override
+    public String toString() {
+        return "ServiceResponse{" +
+                "code=" + code +
+                ", msg='" + msg + '\'' +
+                ", result=" + result +
+                '}';
     }
 }

@@ -5,7 +5,7 @@ package com.snail.smart.vo;
  * @create 2017/04/21
  */
 public class Base {
-    public String client_sys;
+    public String client_sys = "Android";
 
     public String getClient_sys() {
         return client_sys;

@@ -1,41 +1,39 @@
 package com.snail.smart.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.snail.smart.enums.DouYuApiEnum;
-import com.snail.smart.service.RoomService;
+import com.snail.smart.service.UserService;
 import com.snail.smart.utils.HttpUtils;
-import com.snail.smart.vo.Room;
-import com.snail.smart.vo.RoomParam;
 import com.snail.smart.vo.ServiceResponse;
+import com.snail.smart.vo.User;
+import com.snail.smart.vo.UserParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 /**
  * @author snail
- * @create 2017/04/21
+ * @create 2017/04/25
  */
-@Service("roomService")
-public class RoomServiceImpl extends BaseService implements RoomService {
-    private static final Logger logger = LoggerFactory.getLogger(RoomServiceImpl.class);
+@Service("userService")
+public class UserServiceImpl extends BaseService implements UserService {
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
-    public ServiceResponse<List<Room>> queryAllLiveRoom(RoomParam param) {
+    public ServiceResponse<User> login(UserParam param) {
         ServiceResponse result = new ServiceResponse();
 
-        DouYuApiEnum api = DouYuApiEnum.ALL_LIVE;
+        DouYuApiEnum api = DouYuApiEnum.LOGIN;
         logger.info("{}: param={}",api.getMsg(),param);
         String apiResult = HttpUtils.get(getApiUrl(api,param));
         logger.info("{}: result={}",api.getMsg(),apiResult);
         JSONObject json = JSON.parseObject(apiResult);
         int code = json.getInteger("error");
         if(code==0){
-            JSONArray array = json.getJSONArray("data");
-            List<Room> roomList = JSON.parseArray(array.toJSONString(),Room.class);
-            result.setResult(roomList);
+            JSONObject object = json.getJSONObject("data");
+            User user = JSON.parseObject(object.toJSONString(),User.class);
+            result.setResult(user);
         }else {
             result = ServiceResponse.failResponse();
         }

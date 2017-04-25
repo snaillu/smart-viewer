@@ -24,6 +24,7 @@ public class HttpUtils {
         CloseableHttpResponse response = null;
 
         try{
+            logger.info("http get: url={}",url);
             response = httpClient.execute(httpGet);
             HttpEntity entity = response.getEntity();
             result = StringUtils.decodeUnicode(EntityUtils.toString(entity));
