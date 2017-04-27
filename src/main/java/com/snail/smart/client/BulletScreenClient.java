@@ -2,6 +2,7 @@ package com.snail.smart.client;
 
 import com.snail.smart.msg.ClientMsg;
 import com.snail.smart.msg.Decoder;
+import com.snail.smart.msg.MsgParser;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -146,7 +147,7 @@ public class BulletScreenClient {
     }
 
     private void printMsg(Map<String,Object> params){
-        logger.info("params={}",params);
+        MsgParser.parser(params);
     }
 
     public static boolean parseLoginRespond(byte[] respond){
