@@ -30,7 +30,7 @@ public class Decoder {
         for(String param:params){
             String key = StringUtils.substringBefore(param,"@=");
             String value = StringUtils.substringAfter(param,"@=");
-            content.put(key,value);
+            content.put(key, com.snail.smart.utils.StringUtils.unescape(value));
         }
 
     }
