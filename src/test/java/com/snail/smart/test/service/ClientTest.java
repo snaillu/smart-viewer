@@ -1,6 +1,9 @@
 package com.snail.smart.test.service;
 
+import com.snail.smart.client.BulletScreenClient;
 import com.snail.smart.service.TestService;
+import com.snail.smart.task.GetServerMsgTask;
+import com.snail.smart.task.KeepliveTask;
 import com.snail.smart.test.base.BaseTest;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -19,6 +22,5 @@ public class ClientTest extends BaseTest {
 
     @Test
     public void test(){
-        testService.doTest();
     }
 }

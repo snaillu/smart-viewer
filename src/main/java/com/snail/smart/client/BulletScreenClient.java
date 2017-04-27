@@ -1,6 +1,8 @@
 package com.snail.smart.client;
 
 import com.snail.smart.msg.ClientMsg;
+import com.snail.smart.msg.Decoder;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,6 +10,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.net.Inet4Address;
 import java.net.Socket;
+import java.util.Map;
 
 /**
  * @author snail
@@ -41,6 +44,15 @@ public class BulletScreenClient {
         }
 
         return instance;
+    }
+
+    //初始化弹幕
+    public void init(int roomId, int groupId){
+        connectServer();
+        loginRoom(roomId);
+        joinGroup(roomId,groupId);
+
+        isReady = true;
     }
 
     //连接弹幕服务器
@@ -108,6 +120,35 @@ public class BulletScreenClient {
         }
     }
 
+    public void getServerMsg(){
+        try{
+            byte[] recvByte = new byte[MAX_BUFFER_LENGTH];
+            int recvLength = bis.read(recvByte,0,recvByte.length);
+
+            //获取实际的字节码
+            byte[] realByte = new byte[recvLength];
+            System.arraycopy(recvByte,0,realByte,0,recvLength);
+
+            //get msg info and remove the header
+            String msg = new String(realByte,12,realByte.length-12);
+
+            while (msg.lastIndexOf("type@=")>5){
+                Decoder decoder = new Decoder(StringUtils.substring(msg,msg.lastIndexOf("type@=")));
+                printMsg(decoder.getResult());
+                msg = StringUtils.substring(msg,0,msg.lastIndexOf("type@=")-12);
+            }
+
+            Decoder decoder = new Decoder(StringUtils.substring(msg,msg.lastIndexOf("type@=")));
+            printMsg(decoder.getResult());
+        }catch (Exception e){
+            logger.error("get server msg error,msg={}",e);
+        }
+    }
+
+    private void printMsg(Map<String,Object> params){
+        logger.info("params={}",params);
+    }
+
     public static boolean parseLoginRespond(byte[] respond){
         boolean rtn = false;
 
@@ -126,5 +167,9 @@ public class BulletScreenClient {
 
         //返回登录是否成功判断结果
         return rtn;
+    }
+
+    public boolean getIsReady(){
+        return isReady;
     }
 }
