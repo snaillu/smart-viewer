@@ -1,6 +1,7 @@
 package com.snail.smart.msg;
 
 import com.snail.smart.vo.ChatMsg;
+import com.snail.smart.vo.LoginMsg;
 import com.snail.smart.vo.RedPacketMsg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,9 @@ public class MsgParser {
         }else if("gpbc".equals(type)){
             RedPacketMsg msg = new RedPacketMsg(content);
             logger.info("红包消息:{}",msg);
+        }else if("loginres".equals(type)){
+            LoginMsg msg = new LoginMsg(content);
+            logger.info("登录消息:{}",msg);
         }else {
             logger.info("其他消息:{}",content);
         }

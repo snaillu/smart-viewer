@@ -82,10 +82,11 @@ public class BulletScreenClient {
             bos.write(loginRep,0,loginRep.length);
             bos.flush();
 
-            byte[] receiveByte = new byte[MAX_BUFFER_LENGTH];
-            bis.read(receiveByte,0,receiveByte.length);
+            String loginMsg = readMsg();
+            Decoder decoder = new Decoder(loginMsg);
+            printMsg(decoder.getResult());
 
-            if(parseLoginRespond(receiveByte)){
+            if(true){
                 logger.debug("login room success!");
             }else {
                 logger.error("login room failed!");
@@ -121,17 +122,30 @@ public class BulletScreenClient {
         }
     }
 
-    public void getServerMsg(){
+    //read msg from server
+    private String readMsg(){
+        String result = "";
+
         try{
             byte[] recvByte = new byte[MAX_BUFFER_LENGTH];
             int recvLength = bis.read(recvByte,0,recvByte.length);
-
-            //获取实际的字节码
+            if(recvLength<1){
+                return result;
+            }
             byte[] realByte = new byte[recvLength];
             System.arraycopy(recvByte,0,realByte,0,recvLength);
 
-            //get msg info and remove the header
-            String msg = new String(realByte,12,realByte.length-12);
+            result = new String(realByte,12,realByte.length-12);
+        }catch (Exception e){
+            logger.error("read msg error,msg={}",e);
+        }
+
+        return result;
+    }
+
+    public void getServerMsg(){
+        try{
+            String msg = readMsg();
 
             while (msg.lastIndexOf("type@=")>5){
                 Decoder decoder = new Decoder(StringUtils.substring(msg,msg.lastIndexOf("type@=")));

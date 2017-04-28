@@ -10,7 +10,7 @@ import com.snail.smart.task.KeepliveTask;
  */
 public class AppTest {
     public static void main(String[] args){
-        int roomId = 11017, groupId=-9999;
+        int roomId = 1408482, groupId=-9999;
         BulletScreenClient client = BulletScreenClient.getInstance();
         client.init(roomId,groupId);
 
