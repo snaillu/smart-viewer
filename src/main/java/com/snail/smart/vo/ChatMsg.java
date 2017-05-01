@@ -1,25 +1,20 @@
 package com.snail.smart.vo;
 
+import com.snail.smart.annotation.MsgType;
+
 import java.util.Map;
 
 /**
  * @author snail
  * @create 2017/04/27
  */
+@MsgType(type = "聊天消息")
 public class ChatMsg {
     private int uid;
     private String nn;
     private String type;
     private String txt;
     private int rid;
-
-    public ChatMsg(Map<String,Object> content){
-        uid = Integer.parseInt((String) content.get("uid"));
-        nn = (String) content.get("nn");
-        type = (String) content.get("type");
-        txt = (String) content.get("txt");
-        rid = Integer.parseInt((String) content.get("rid"));
-    }
 
     public int getUid() {
         return uid;

@@ -10,7 +10,8 @@ import com.snail.smart.task.KeepliveTask;
  */
 public class AppTest {
     public static void main(String[] args){
-        int roomId = 1408482, groupId=-9999;
+        //th000:11017
+        int roomId = 318624, groupId=-9999;
         BulletScreenClient client = BulletScreenClient.getInstance();
         client.init(roomId,groupId);
 
@@ -19,5 +20,12 @@ public class AppTest {
 
         GetServerMsgTask getMsg = new GetServerMsgTask();
         getMsg.start();
+
+        try{
+            Thread.sleep(5000);
+        }catch (Exception e){
+
+        }
+        client.sendMsg();
     }
 }

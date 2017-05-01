@@ -52,6 +52,8 @@ public class BulletScreenClient {
         connectServer();
         loginRoom(roomId);
         joinGroup(roomId,groupId);
+        //loginRoom2(roomId);
+
 
         isReady = true;
     }
@@ -93,6 +95,34 @@ public class BulletScreenClient {
             }
         }catch (Exception e){
             logger.error("login room error, roomId={}, msg={}",roomId,e);
+        }
+    }
+
+    private void loginRoom2(int roomId){
+        byte[] loginReq = ClientMsg.getLgoinReqMsg2(roomId);
+
+        try{
+            bos.write(loginReq,0,loginReq.length);
+            bos.flush();
+
+            String loginMsg = readMsg();
+            Decoder decoder = new Decoder(loginMsg);
+            printMsg(decoder.getResult());
+        }catch (Exception e){
+            logger.error("login room2 error,msg={}",e);
+        }
+    }
+
+    public void sendMsg(){
+        byte[] sendReq = ClientMsg.chatMessage("slkdfj");
+
+        try{
+            bos.write(sendReq,0,sendReq.length);
+            bos.flush();
+
+            logger.debug("send msg ok.");
+        }catch (Exception e){
+            logger.error("send msg error,msg={}",e);
         }
     }
 

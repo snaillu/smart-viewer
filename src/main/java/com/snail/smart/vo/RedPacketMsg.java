@@ -1,11 +1,12 @@
 package com.snail.smart.vo;
 
-import java.util.Map;
+import com.snail.smart.annotation.MsgType;
 
 /**
  * @author snail
  * @create 2017/04/27
  */
+@MsgType(type = "抢红包消息")
 public class RedPacketMsg {
     //{dnk=超级的大蜗牛, rpt=0, sid=865336, pnm=赞, cnt=3, rid=11017, snk=脑浆炖大肠, did=104954726, type=gpbc}
     private String dnk;
@@ -16,17 +17,6 @@ public class RedPacketMsg {
     private String snk;
     private int did;
     private String type;
-
-    public RedPacketMsg(Map<String,Object> content){
-        dnk = (String) content.get("dnk");
-        sid = (Integer) content.get("sid");
-        pnm = (String) content.get("pnm");
-        cnt = (Integer) content.get("cnt");
-        rid = Integer.parseInt((String) content.get("rid"));
-        snk = (String) content.get("cnt");
-        did = (Integer) content.get("did");
-        type = (String) content.get("type");
-    }
 
     public String getDnk() {
         return dnk;

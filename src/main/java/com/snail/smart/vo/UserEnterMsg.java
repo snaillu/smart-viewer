@@ -2,19 +2,18 @@ package com.snail.smart.vo;
 
 import com.snail.smart.annotation.MsgType;
 
-
 /**
  * @author snail
- * @create 2017/04/27
+ * @create 2017/04/28
  */
-@MsgType(type = "赠送礼物消息")
-public class GiftMsg {
+@MsgType(type = "进入房间消息")
+public class UserEnterMsg {
+    //{uid=46523564, ic=avanew/face/201611/27/23/d4d5221fd93af4d80928a4ca407b3ac1, level=26, el=, rid=318624, nn=锦衣卫丶财哥, type=uenter, rni=0}
     private int uid;
-    private int dw;
+    private int level;
+    private int rid;
     private String nn;
     private String type;
-    private int rid;
-    private int gfid;
 
     public int getUid() {
         return uid;
@@ -24,12 +23,20 @@ public class GiftMsg {
         this.uid = uid;
     }
 
-    public int getDw() {
-        return dw;
+    public int getLevel() {
+        return level;
     }
 
-    public void setDw(int dw) {
-        this.dw = dw;
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public int getRid() {
+        return rid;
+    }
+
+    public void setRid(int rid) {
+        this.rid = rid;
     }
 
     public String getNn() {
@@ -48,31 +55,14 @@ public class GiftMsg {
         this.type = type;
     }
 
-    public int getRid() {
-        return rid;
-    }
-
-    public void setRid(int rid) {
-        this.rid = rid;
-    }
-
-    public int getGfid() {
-        return gfid;
-    }
-
-    public void setGfid(int gfid) {
-        this.gfid = gfid;
-    }
-
     @Override
     public String toString() {
-        return "GiftMsg{" +
+        return "UserEnterMsg{" +
                 "uid=" + uid +
-                ", dw=" + dw +
+                ", level=" + level +
+                ", rid=" + rid +
                 ", nn='" + nn + '\'' +
                 ", type='" + type + '\'' +
-                ", rid=" + rid +
-                ", gfid=" + gfid +
                 '}';
     }
 }

@@ -1,8 +1,8 @@
 package com.snail.smart.msg;
 
-import com.snail.smart.vo.ChatMsg;
-import com.snail.smart.vo.LoginMsg;
-import com.snail.smart.vo.RedPacketMsg;
+import com.snail.smart.annotation.MsgType;
+import com.snail.smart.utils.BeanUtils;
+import com.snail.smart.vo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,20 +15,34 @@ import java.util.Map;
 public class MsgParser {
     private static final Logger logger = LoggerFactory.getLogger(MsgParser.class);
 
-    public static void parser(Map<String,Object> content){
-        String type = (String) content.get("type");
+    public static <T> void parser(Map<String,Object> content){
+        T t = BeanUtils.createMsg(content);
+        if(t==null){
+            logger.info("其他消息:{}",content);
+        }else{
+            Class cls = t.getClass();
+            MsgType msgType = (MsgType) cls.getAnnotation(MsgType.class);
+            logger.info("{}:{}",msgType.type(),content);
+        }
+    }
+
+    public static <T> T getMsg(String type){
+        Class cls = null;
 
         if("chatmsg".equals(type)){
-            ChatMsg msg = new ChatMsg(content);
-            logger.info("聊天消息:{}",msg);
+            cls = ChatMsg.class;
+        }else if("dgb".equals(type)){
+            cls = GiftMsg.class;
         }else if("gpbc".equals(type)){
-            RedPacketMsg msg = new RedPacketMsg(content);
-            logger.info("红包消息:{}",msg);
+            cls = RedPacketMsg.class;
         }else if("loginres".equals(type)){
-            LoginMsg msg = new LoginMsg(content);
-            logger.info("登录消息:{}",msg);
-        }else {
-            logger.info("其他消息:{}",content);
+            cls = LoginMsg.class;
+        }else if("uenter".equals(type)){
+            cls = UserEnterMsg.class;
+        }else if("spbc".equals(type)){
+            cls = RoomGiftMsg.class;
         }
+
+        return BeanUtils.newInstance(cls);
     }
 }

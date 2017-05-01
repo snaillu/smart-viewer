@@ -1,11 +1,13 @@
 package com.snail.smart.vo;
 
-import java.util.Map;
+
+import com.snail.smart.annotation.MsgType;
 
 /**
  * @author snail
  * @create 2017/04/28
  */
+@MsgType(type = "登录消息")
 public class LoginMsg {
     //{sid=70103, nrc=2093311136, it=0, nickname=, ill_ct=, userid=0, is_illegal=0, its=0, type=loginres, sessionid=0, cur_lev=0, best_dlev=0, ill_ts=0, roomgroup=0, username=, pg=0, ih=0, npv=0, now=0, live_stat=0, es=0, ps=0}
     private int sid;
@@ -16,17 +18,6 @@ public class LoginMsg {
     private String type;
     private int cur_lev;
     private String username;
-
-    public LoginMsg(Map<String,Object> content){
-        sid = Integer.parseInt((String) content.get("sid"));
-        nrc = (String) content.get("nrc");
-        nickname = (String) content.get("nickname");
-        userid = Integer.parseInt((String) content.get("userid"));
-        is_illegal = Integer.parseInt((String) content.get("is_illegal"));
-        type = (String) content.get("type");
-        cur_lev = Integer.parseInt((String) content.get("cur_lev"));
-        username = (String) content.get("username");
-    }
 
     public int getSid() {
         return sid;
