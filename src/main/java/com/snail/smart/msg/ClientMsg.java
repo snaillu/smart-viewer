@@ -1,10 +1,19 @@
 package com.snail.smart.msg;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import sun.misc.BASE64Encoder;
+
+import java.security.MessageDigest;
+import java.util.UUID;
+
 /**
  * @author snail
  * @create 2017/04/26
  */
 public class ClientMsg {
+    private static final Logger logger = LoggerFactory.getLogger(ClientMsg.class);
+
     public static final int MSG_HEADER = 689;
 
     //登录请求消息
@@ -13,15 +22,6 @@ public class ClientMsg {
         encoder.addParam("roomid",roomId);
         encoder.addParam("username","104954726");
         encoder.addParam("password","");
-
-        return encoder.getResult();
-    }
-
-    public static byte[] getLgoinReqMsg2(int roomId){
-        Encoder encoder = new Encoder("loginreq");
-        encoder.addParam("roomid",roomId);
-        encoder.addParam("username","104954726");
-        encoder.addParam("password","1234567890123456");
 
         return encoder.getResult();
     }
@@ -73,5 +73,95 @@ public class ClientMsg {
         encoder.addParam("content","sueprsnail.....");
 
         return encoder.getResult();
+    }
+
+    //step one
+    public static byte[] validateLoginReq(int roomId){
+        Encoder encoder = new Encoder("loginreq");
+
+        String devId = "15C327B2D6BF6544DE342F81A9074BA6";
+        String rt = String.valueOf(System.currentTimeMillis()/1000);
+        String vk = md5(rt+"7oE9nPEG9xXV69phU31FYCLUagKeYtsF"+devId);
+
+        encoder.addParam("username","104954726");
+        encoder.addParam("ct",0);
+        encoder.addParam("password","");
+        encoder.addParam("roomid",roomId);
+        encoder.addParam("devid",devId);
+        encoder.addParam("rt",rt);
+        encoder.addParam("vk",vk);
+        encoder.addParam("ver","20150929");
+        encoder.addParam("aver","2017050701");
+        encoder.addParam("ltkid","22718325");
+        encoder.addParam("biz","1");
+        encoder.addParam("stk","3ac47831a30fb493");
+        logger.info("validate msg={}",encoder);
+
+
+        return encoder.getResult();
+    }
+
+    //step two
+    public static byte[] qtlnq(){
+        Encoder encoder = new Encoder("qtlnq");
+
+        return encoder.getResult();
+    }
+
+    //step three
+    public static byte[] chatmessage(String content){
+        Encoder encoder = new Encoder("chatmessage");
+        encoder.addParam("receiver",0);
+        encoder.addParam("content",content);
+        encoder.addParam("scope","");
+        encoder.addParam("col",0);
+        encoder.addParam("pid","");
+        encoder.addParam("p2p",0);
+        encoder.addParam("nc",0);
+        encoder.addParam("rev",0);
+        logger.debug("chatmessage request msg={}",encoder);
+
+        return encoder.getResult();
+    }
+
+    private static String getDevId(){
+        UUID uuid =UUID.randomUUID();
+
+        return uuid.toString().replace("-", "").toUpperCase();
+    }
+
+    public final static String md5(String s) {
+        char hexDigits[]={'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
+        try {
+            byte[] btInput = s.getBytes();
+            // 获得MD5摘要算法的 MessageDigest 对象
+            MessageDigest mdInst = MessageDigest.getInstance("MD5");
+            // 使用指定的字节更新摘要
+            mdInst.update(btInput);
+            // 获得密文
+            byte[] md = mdInst.digest();
+            // 把密文转换成十六进制的字符串形式
+            int j = md.length;
+            char str[] = new char[j * 2];
+            int k = 0;
+            for (int i = 0; i < j; i++) {
+                byte byte0 = md[i];
+                str[k++] = hexDigits[byte0 >>> 4 & 0xf];
+                str[k++] = hexDigits[byte0 & 0xf];
+            }
+            return new String(str).toLowerCase();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static void main(String[] args){
+        String devicId = "15C327B2D6BF6544DE342F81A9074BA6",rt = "1494232576", middle = "7oE9nPEG9xXV69phU31FYCLUagKeYtsF";
+        //14537958227oE9nPEG9xXV69phU31FYCLUagKeYtsFDF9E4515E0EE766B39F8D8A2E928BB7C
+        String md5 = md5(rt+middle+devicId);
+        //4fc6e613fc650a058757331ed6c8a619
+        System.out.println("md5="+md5);
+
     }
 }

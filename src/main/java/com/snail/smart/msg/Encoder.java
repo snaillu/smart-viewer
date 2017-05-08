@@ -28,4 +28,9 @@ public class Encoder {
 
         buffer.append("/");
     }
+
+    @Override
+    public String toString() {
+        return buffer.append('\0').toString();
+    }
 }

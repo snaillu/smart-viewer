@@ -50,9 +50,11 @@ public class BulletScreenClient {
     //初始化弹幕
     public void init(int roomId, int groupId){
         connectServer();
-        loginRoom(roomId);
-        joinGroup(roomId,groupId);
-        //loginRoom2(roomId);
+        validateLoginReq(roomId);
+        qtlnq();
+        chatmessage();
+        //loginRoom(roomId);
+        //joinGroup(roomId,groupId);
 
 
         isReady = true;
@@ -64,7 +66,8 @@ public class BulletScreenClient {
             //获取弹幕访问host
             String host = Inet4Address.getByName(hostName).getHostAddress();
             //建立sock连接
-            sock = new Socket(host,port);
+            //sock = new Socket(host,8067);
+            sock = new Socket("119.90.49.94",8067);
             //设置输入输出
             bos = new BufferedOutputStream(sock.getOutputStream());
             bis = new BufferedInputStream(sock.getInputStream());
@@ -73,6 +76,29 @@ public class BulletScreenClient {
         }
 
         logger.debug("connect to server success!");
+    }
+
+    //step one
+    private void validateLoginReq(int roomId){
+        byte[] validateLoginReq = ClientMsg.validateLoginReq(roomId);
+
+        sendMsg(validateLoginReq);
+        String loginMsg = readMsg();
+        logger.info("validateLoginReq response msg={}",loginMsg);
+    }
+
+    //step two
+    private void qtlnq(){
+        byte[] qtlnqReq = ClientMsg.qtlnq();
+        sendMsg(qtlnqReq);
+    }
+
+    //step three
+    private void chatmessage(){
+        byte[] chatMsgReq = ClientMsg.chatmessage("snail"+System.currentTimeMillis());
+        sendMsg(chatMsgReq);
+        String sendMsg = readMsg();
+        logger.info("send chat msg result={}",sendMsg);
     }
 
     //登录房间
@@ -98,22 +124,7 @@ public class BulletScreenClient {
         }
     }
 
-    private void loginRoom2(int roomId){
-        byte[] loginReq = ClientMsg.getLgoinReqMsg2(roomId);
-
-        try{
-            bos.write(loginReq,0,loginReq.length);
-            bos.flush();
-
-            String loginMsg = readMsg();
-            Decoder decoder = new Decoder(loginMsg);
-            printMsg(decoder.getResult());
-        }catch (Exception e){
-            logger.error("login room2 error,msg={}",e);
-        }
-    }
-
-    public void sendMsg(){
+    public void sendChatMsg(){
         byte[] sendReq = ClientMsg.chatMessage("slkdfj");
 
         try{
@@ -149,6 +160,17 @@ public class BulletScreenClient {
             logger.debug("send keep live request success!");
         }catch (Exception e){
             logger.error("keep live error, msg={}",e);
+        }
+    }
+
+    private void sendMsg(byte[] req){
+        try{
+            //发送登录房间信息
+            bos.write(req,0,req.length);
+            bos.flush();
+
+        }catch (Exception e){
+            logger.error("login room error, msg={}",e);
         }
     }
 
