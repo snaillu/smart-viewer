@@ -50,12 +50,8 @@ public class BulletScreenClient {
     //初始化弹幕
     public void init(int roomId, int groupId){
         connectServer();
-        validateLoginReq(roomId);
-        qtlnq();
-        chatmessage();
-        //loginRoom(roomId);
-        //joinGroup(roomId,groupId);
-
+        loginRoom(roomId);
+        joinGroup(roomId,groupId);
 
         isReady = true;
     }
@@ -64,10 +60,10 @@ public class BulletScreenClient {
     private void connectServer(){
         try{
             //获取弹幕访问host
-            String host = Inet4Address.getByName("danmu.douyutv.com").getHostAddress();
+            String host = Inet4Address.getByName(hostName).getHostAddress();
             //建立sock连接
-            //sock = new Socket(host,8601);
-            sock = new Socket("119.90.49.90",8097);
+            sock = new Socket(host,port);
+
             //设置输入输出
             bos = new BufferedOutputStream(sock.getOutputStream());
             bis = new BufferedInputStream(sock.getInputStream());

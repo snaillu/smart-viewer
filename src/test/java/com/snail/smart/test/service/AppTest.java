@@ -19,13 +19,6 @@ public class AppTest {
         keeplive.start();
 
         GetServerMsgTask getMsg = new GetServerMsgTask();
-        //getMsg.start();
-
-        try{
-            Thread.sleep(5000);
-        }catch (Exception e){
-
-        }
-        //client.sendMsg();
+        getMsg.start();
     }
 }
