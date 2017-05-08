@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.snail.smart.enums.DouYuApiEnum;
 import com.snail.smart.service.RoomService;
 import com.snail.smart.utils.HttpUtils;
+import com.snail.smart.utils.StringUtils;
 import com.snail.smart.vo.Room;
 import com.snail.smart.vo.RoomParam;
 import com.snail.smart.vo.ServiceResponse;
@@ -41,5 +42,15 @@ public class RoomServiceImpl extends BaseService implements RoomService {
         }
 
         return result;
+    }
+
+    public void queryRoomDetail(RoomParam param) {
+        String rt = String.valueOf(System.currentTimeMillis()/1000);
+        String auth = StringUtils.md5("room/255865?aid=android&cdn=ws&client_sys=android&time="+rt+"1231");
+
+        String url = "http://capi.douyucdn.cn/api/v1/room/255865?aid=android&cdn=ws&client_sys=android&time="+rt+"&token=136166272_ac810c03d14fb679&auth="+auth;
+        logger.info("query url:{}",url);
+        String apiResult = HttpUtils.get(url);
+        logger.info("query result msg={}",apiResult);
     }
 }

@@ -1,5 +1,6 @@
 package com.snail.smart.msg;
 
+import com.snail.smart.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sun.misc.BASE64Encoder;
@@ -79,9 +80,9 @@ public class ClientMsg {
     public static byte[] validateLoginReq(int roomId){
         Encoder encoder = new Encoder("loginreq");
 
-        String devId = "15C327B2D6BF6544DE342F81A9074BA6";
+        String devId = getDevId();
         String rt = String.valueOf(System.currentTimeMillis()/1000);
-        String vk = md5(rt+"7oE9nPEG9xXV69phU31FYCLUagKeYtsF"+devId);
+        String vk = StringUtils.md5(rt+"7oE9nPEG9xXV69phU31FYCLUagKeYtsF"+devId);
 
         encoder.addParam("username","104954726");
         encoder.addParam("ct",0);
@@ -130,36 +131,12 @@ public class ClientMsg {
         return uuid.toString().replace("-", "").toUpperCase();
     }
 
-    public final static String md5(String s) {
-        char hexDigits[]={'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
-        try {
-            byte[] btInput = s.getBytes();
-            // 获得MD5摘要算法的 MessageDigest 对象
-            MessageDigest mdInst = MessageDigest.getInstance("MD5");
-            // 使用指定的字节更新摘要
-            mdInst.update(btInput);
-            // 获得密文
-            byte[] md = mdInst.digest();
-            // 把密文转换成十六进制的字符串形式
-            int j = md.length;
-            char str[] = new char[j * 2];
-            int k = 0;
-            for (int i = 0; i < j; i++) {
-                byte byte0 = md[i];
-                str[k++] = hexDigits[byte0 >>> 4 & 0xf];
-                str[k++] = hexDigits[byte0 & 0xf];
-            }
-            return new String(str).toLowerCase();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+
 
     public static void main(String[] args){
         String devicId = "15C327B2D6BF6544DE342F81A9074BA6",rt = "1494232576", middle = "7oE9nPEG9xXV69phU31FYCLUagKeYtsF";
         //14537958227oE9nPEG9xXV69phU31FYCLUagKeYtsFDF9E4515E0EE766B39F8D8A2E928BB7C
-        String md5 = md5(rt+middle+devicId);
+        String md5 = StringUtils.md5(rt+middle+devicId);
         //4fc6e613fc650a058757331ed6c8a619
         System.out.println("md5="+md5);
 

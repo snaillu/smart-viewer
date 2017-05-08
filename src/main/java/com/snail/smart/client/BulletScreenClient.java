@@ -64,10 +64,10 @@ public class BulletScreenClient {
     private void connectServer(){
         try{
             //获取弹幕访问host
-            String host = Inet4Address.getByName(hostName).getHostAddress();
+            String host = Inet4Address.getByName("danmu.douyutv.com").getHostAddress();
             //建立sock连接
-            //sock = new Socket(host,8067);
-            sock = new Socket("119.90.49.94",8067);
+            //sock = new Socket(host,8601);
+            sock = new Socket("119.90.49.90",8097);
             //设置输入输出
             bos = new BufferedOutputStream(sock.getOutputStream());
             bis = new BufferedInputStream(sock.getInputStream());

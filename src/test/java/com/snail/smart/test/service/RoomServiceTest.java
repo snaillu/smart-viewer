@@ -28,4 +28,9 @@ public class RoomServiceTest extends BaseTest {
         ServiceResponse<List<Room>> result = roomService.queryAllLiveRoom(param);
         logger.info("getAllLiveRoom result={}",result);
     }
+
+    @Test
+    public void queryRoomDetail(){
+        roomService.queryRoomDetail(null);
+    }
 }
