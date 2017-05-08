@@ -11,6 +11,8 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.net.Inet4Address;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -191,21 +193,26 @@ public class BulletScreenClient {
         return result;
     }
 
-    public void getServerMsg(){
+    public List<Decoder> getServerMsg(){
+        List<Decoder> result = new ArrayList<Decoder>();
+
         try{
             String msg = readMsg();
 
             while (msg.lastIndexOf("type@=")>5){
                 Decoder decoder = new Decoder(StringUtils.substring(msg,msg.lastIndexOf("type@=")));
-                printMsg(decoder.getResult());
+                //printMsg(decoder.getResult());
+                result.add(decoder);
                 msg = StringUtils.substring(msg,0,msg.lastIndexOf("type@=")-12);
             }
 
             Decoder decoder = new Decoder(StringUtils.substring(msg,msg.lastIndexOf("type@=")));
-            printMsg(decoder.getResult());
+            result.add(decoder);
         }catch (Exception e){
             logger.error("get server msg error,msg={}",e);
         }
+
+        return result;
     }
 
     private void printMsg(Map<String,Object> params){

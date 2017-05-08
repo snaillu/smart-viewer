@@ -10,15 +10,15 @@ import com.snail.smart.task.KeepliveTask;
  */
 public class AppTest {
     public static void main(String[] args){
-        //th000:11017   魅力：468241  infi:255865
-        int roomId = 255865, groupId=-9999;
+        //th000:11017   魅力：468241  infi:255865 ted:259057
+        int roomId = 259057, groupId=-9999;
         BulletScreenClient client = BulletScreenClient.getInstance();
         client.init(roomId,groupId);
 
         KeepliveTask keeplive = new KeepliveTask();
         keeplive.start();
 
-        GetServerMsgTask getMsg = new GetServerMsgTask();
+        GetServerMsgTask getMsg = new GetServerMsgTask(null);
         getMsg.start();
     }
 }

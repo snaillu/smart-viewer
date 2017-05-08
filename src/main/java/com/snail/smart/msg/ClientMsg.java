@@ -21,7 +21,7 @@ public class ClientMsg {
     public static byte[] getLoginReqMsg(int roomId){
         Encoder encoder = new Encoder("loginreq");
         encoder.addParam("roomid",roomId);
-        encoder.addParam("username","104954726");
+        encoder.addParam("username","");
         encoder.addParam("password","");
 
         return encoder.getResult();

@@ -44,7 +44,7 @@ public class ServerLoginClient extends BaseClient {
         connectServer();
         validateLoginReq(roomId);
         qtlnq();
-        chatmessage();
+        //chatmessage();
 
         isReady = true;
     }
@@ -65,8 +65,8 @@ public class ServerLoginClient extends BaseClient {
     }
 
     //step three
-    public void chatmessage(){
-        byte[] chatMsgReq = ClientMsg.chatmessage("snail"+System.currentTimeMillis());
+    public void chatmessage(String text){
+        byte[] chatMsgReq = ClientMsg.chatmessage(text);
         sendMsg(chatMsgReq);
         String sendMsg = readMsg();
         logger.info("send chat msg result={}",sendMsg);

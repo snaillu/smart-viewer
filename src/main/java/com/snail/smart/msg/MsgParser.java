@@ -6,6 +6,7 @@ import com.snail.smart.vo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Field;
 import java.util.Map;
 
 /**
@@ -15,7 +16,7 @@ import java.util.Map;
 public class MsgParser {
     private static final Logger logger = LoggerFactory.getLogger(MsgParser.class);
 
-    public static <T> void parser(Map<String,Object> content){
+    public static <T> T parser(Map<String,Object> content){
         T t = BeanUtils.createMsg(content);
         if(t==null){
             logger.info("其他消息:{}",content);
@@ -24,6 +25,25 @@ public class MsgParser {
             MsgType msgType = (MsgType) cls.getAnnotation(MsgType.class);
             logger.info("{}:{}",msgType.type(),content);
         }
+
+        return t;
+    }
+
+    public static <T> String getMsgType(T t){
+        if(t == null){
+            return null;
+        }
+
+        String type = "";
+        try{
+            Class cls = t.getClass();
+            Field field = cls.getDeclaredField("type");
+            type = (String)field.get(t);
+        }catch (Exception e){
+            logger.error("get msg type error,msg={}",e);
+        }
+
+        return type;
     }
 
     public static <T> T getMsg(String type){
