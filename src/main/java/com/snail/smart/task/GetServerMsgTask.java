@@ -58,7 +58,7 @@ public class GetServerMsgTask extends Thread {
         }
         if(msg != null){
             logger.info("发送消息：{}",msg);
-            loginClient.chatmessage("ss"+msg.length());
+            loginClient.chatmessage(msg);
         }
 
         return msg;

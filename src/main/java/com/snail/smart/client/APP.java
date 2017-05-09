@@ -13,12 +13,13 @@ public class APP {
     private static final Logger logger = LoggerFactory.getLogger(APP.class);
 
     public static void main(String[] args){
-        //th000:11017   魅力：468241  infi:255865  ted:259057
-        int roomId = 259057, groupId=-9999;
+        //th000:11017   魅力：468241  infi:255865  ted:259057  傻哥：1408482
+        int roomId = 1408482, groupId=-9999;
 
         ServerLoginClient loginClient = ServerLoginClient.getInstance();
         loginClient.init(roomId);
-        loginClient.chatmessage("hello,world.");
+//        loginClient.chatmessage("蜗牛");
+//        sleep(3000);
 
 
         BulletScreenClient client = BulletScreenClient.getInstance();

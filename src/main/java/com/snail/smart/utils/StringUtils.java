@@ -49,13 +49,15 @@ public class StringUtils {
         DataOutputStream doutput = new DataOutputStream(boutput);
 
         try{
+            byte[] dataBytes = data.getBytes();
             boutput.reset();
-            doutput.write(FormatTransfer.toLH(data.length() + 8), 0, 4);        // 4 bytes packet length
-            doutput.write(FormatTransfer.toLH(data.length() + 8), 0, 4);        // 4 bytes packet length
+            doutput.write(FormatTransfer.toLH(dataBytes.length + 8), 0, 4);        // 4 bytes packet length
+            doutput.write(FormatTransfer.toLH(dataBytes.length + 8), 0, 4);        // 4 bytes packet length
             doutput.write(FormatTransfer.toLH(ClientMsg.MSG_HEADER), 0, 2);   // 2 bytes message type
             doutput.writeByte(0);                                               // 1 bytes encrypt
             doutput.writeByte(0);                                               // 1 bytes reserve
-            doutput.writeBytes(data);
+
+            doutput.write(dataBytes,0,dataBytes.length);
         }catch(Exception e){
             e.printStackTrace();
         }

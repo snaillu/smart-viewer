@@ -3,9 +3,7 @@ package com.snail.smart.msg;
 import com.snail.smart.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.misc.BASE64Encoder;
 
-import java.security.MessageDigest;
 import java.util.UUID;
 
 /**
@@ -69,13 +67,6 @@ public class ClientMsg {
         return encoder.getResult();
     }
 
-    public static byte[] chatMessage(String content){
-        Encoder encoder = new Encoder("chatmessage");
-        encoder.addParam("content","sueprsnail.....");
-
-        return encoder.getResult();
-    }
-
     //step one
     public static byte[] validateLoginReq(int roomId){
         Encoder encoder = new Encoder("loginreq");
@@ -96,7 +87,7 @@ public class ClientMsg {
         encoder.addParam("ltkid","22718325");
         encoder.addParam("biz","1");
         encoder.addParam("stk","3ac47831a30fb493");
-        logger.info("validate msg={}",encoder);
+        //logger.info("validate msg={}",encoder);
 
 
         return encoder.getResult();
@@ -120,7 +111,7 @@ public class ClientMsg {
         encoder.addParam("p2p",0);
         encoder.addParam("nc",0);
         encoder.addParam("rev",0);
-        logger.debug("chatmessage request msg={}",encoder);
+        //logger.debug("chatmessage request msg={}",encoder);
 
         return encoder.getResult();
     }

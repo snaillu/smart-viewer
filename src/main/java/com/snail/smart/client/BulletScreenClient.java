@@ -122,19 +122,6 @@ public class BulletScreenClient {
         }
     }
 
-    public void sendChatMsg(){
-        byte[] sendReq = ClientMsg.chatMessage("slkdfj");
-
-        try{
-            bos.write(sendReq,0,sendReq.length);
-            bos.flush();
-
-            logger.debug("send msg ok.");
-        }catch (Exception e){
-            logger.error("send msg error,msg={}",e);
-        }
-    }
-
     private void joinGroup(int roomId, int groupId){
         byte[] groupReq = ClientMsg.getJoinGroupMsg(roomId,groupId);
 
