@@ -11,6 +11,8 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.net.Inet4Address;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -50,12 +52,8 @@ public class BulletScreenClient {
     //初始化弹幕
     public void init(int roomId, int groupId){
         connectServer();
-        validateLoginReq(roomId);
-        qtlnq();
-        chatmessage();
-        //loginRoom(roomId);
-        //joinGroup(roomId,groupId);
-
+        loginRoom(roomId);
+        joinGroup(roomId,groupId);
 
         isReady = true;
     }
@@ -66,8 +64,8 @@ public class BulletScreenClient {
             //获取弹幕访问host
             String host = Inet4Address.getByName(hostName).getHostAddress();
             //建立sock连接
-            //sock = new Socket(host,8067);
-            sock = new Socket("119.90.49.94",8067);
+            sock = new Socket(host,port);
+
             //设置输入输出
             bos = new BufferedOutputStream(sock.getOutputStream());
             bis = new BufferedInputStream(sock.getInputStream());
@@ -195,21 +193,26 @@ public class BulletScreenClient {
         return result;
     }
 
-    public void getServerMsg(){
+    public List<Decoder> getServerMsg(){
+        List<Decoder> result = new ArrayList<Decoder>();
+
         try{
             String msg = readMsg();
 
             while (msg.lastIndexOf("type@=")>5){
                 Decoder decoder = new Decoder(StringUtils.substring(msg,msg.lastIndexOf("type@=")));
-                printMsg(decoder.getResult());
+                //printMsg(decoder.getResult());
+                result.add(decoder);
                 msg = StringUtils.substring(msg,0,msg.lastIndexOf("type@=")-12);
             }
 
             Decoder decoder = new Decoder(StringUtils.substring(msg,msg.lastIndexOf("type@=")));
-            printMsg(decoder.getResult());
+            result.add(decoder);
         }catch (Exception e){
             logger.error("get server msg error,msg={}",e);
         }
+
+        return result;
     }
 
     private void printMsg(Map<String,Object> params){

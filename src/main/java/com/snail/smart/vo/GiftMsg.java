@@ -11,6 +11,8 @@ import com.snail.smart.annotation.MsgType;
 public class GiftMsg {
     private int uid;
     private int dw;
+    //礼物个数
+    private int hits;
     private String nn;
     private String type;
     private int rid;
@@ -64,11 +66,20 @@ public class GiftMsg {
         this.gfid = gfid;
     }
 
+    public int getHits() {
+        return hits;
+    }
+
+    public void setHits(int hits) {
+        this.hits = hits;
+    }
+
     @Override
     public String toString() {
         return "GiftMsg{" +
                 "uid=" + uid +
                 ", dw=" + dw +
+                ", hits=" + hits +
                 ", nn='" + nn + '\'' +
                 ", type='" + type + '\'' +
                 ", rid=" + rid +

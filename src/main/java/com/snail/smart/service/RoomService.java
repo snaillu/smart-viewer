@@ -12,4 +12,6 @@ import java.util.List;
  */
 public interface RoomService {
     public ServiceResponse<List<Room>> queryAllLiveRoom(RoomParam param);
+
+    public void queryRoomDetail(RoomParam param);
 }
