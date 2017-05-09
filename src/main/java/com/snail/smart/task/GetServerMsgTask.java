@@ -52,7 +52,7 @@ public class GetServerMsgTask extends Thread {
         if("dgb".equals(type)){
             GiftMsg giftMsg = (GiftMsg)t;
             SendGiftMsgTask task = SendGiftMsgTask.getInstance();
-            task.addGift(giftMsg);
+            //task.addGift(giftMsg);
             //msg = String.format("感谢%s赠送的%d个%s",giftMsg.getNn(),giftMsg.getHits(), GiftTypeEnum.getGiftName(giftMsg.getGfid()));
         }else if("uenter".equals(type)){
             UserEnterMsg userEnterMsg = (UserEnterMsg)t;

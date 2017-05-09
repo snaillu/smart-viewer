@@ -33,9 +33,6 @@ public class APP {
         KeepliveTask keeplive = new KeepliveTask();
         keeplive.start();
 
-        ServerKeepliveTask serverKeepliveTask = new ServerKeepliveTask();
-        serverKeepliveTask.start();
-
         GetServerMsgTask getMsg = new GetServerMsgTask(loginClient);
         getMsg.start();
 

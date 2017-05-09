@@ -76,29 +76,6 @@ public class BulletScreenClient {
         logger.debug("connect to server success!");
     }
 
-    //step one
-    private void validateLoginReq(int roomId){
-        byte[] validateLoginReq = ClientMsg.validateLoginReq(roomId);
-
-        sendMsg(validateLoginReq);
-        String loginMsg = readMsg();
-        logger.info("validateLoginReq response msg={}",loginMsg);
-    }
-
-    //step two
-    private void qtlnq(){
-        byte[] qtlnqReq = ClientMsg.qtlnq();
-        sendMsg(qtlnqReq);
-    }
-
-    //step three
-    private void chatmessage(){
-        byte[] chatMsgReq = ClientMsg.chatmessage("snail"+System.currentTimeMillis());
-        sendMsg(chatMsgReq);
-        String sendMsg = readMsg();
-        logger.info("send chat msg result={}",sendMsg);
-    }
-
     //登录房间
     private void loginRoom(int roomId){
         byte[] loginRep = ClientMsg.getLoginReqMsg(roomId);
@@ -204,26 +181,6 @@ public class BulletScreenClient {
 
     private void printMsg(Map<String,Object> params){
         MsgParser.parser(params);
-    }
-
-    public static boolean parseLoginRespond(byte[] respond){
-        boolean rtn = false;
-
-        //返回数据不正确（仅包含12位信息头，没有信息内容）
-        if(respond.length <= 12){
-            return rtn;
-        }
-
-        //解析返回信息包中的信息内容
-        String dataStr = new String(respond, 12, respond.length - 12);
-
-        //针对登录返回信息进行判断
-        if(dataStr.contains("type@=loginres")){
-            rtn = true;
-        }
-
-        //返回登录是否成功判断结果
-        return rtn;
     }
 
     public boolean getIsReady(){

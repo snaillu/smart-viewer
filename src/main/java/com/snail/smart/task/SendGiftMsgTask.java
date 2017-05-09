@@ -7,6 +7,7 @@ import com.snail.smart.utils.Utils;
 import com.snail.smart.vo.GiftMsg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -41,6 +42,10 @@ public class SendGiftMsgTask extends Thread  {
         ServerLoginClient client = ServerLoginClient.getInstance();
         while (client.isReady()){
             Utils.sleep(GIFT_SLEEP_TIME);
+            if(CollectionUtils.isEmpty(gifts)){
+                return;
+            }
+
             Iterator<Map.Entry<Integer,GiftMsg>> it = gifts.entrySet().iterator();
             while (it.hasNext()){
                 int size = gifts.size();
