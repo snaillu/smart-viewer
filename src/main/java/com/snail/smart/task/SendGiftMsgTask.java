@@ -48,7 +48,7 @@ public class SendGiftMsgTask extends Thread  {
                 it.remove();
                 String giftMsg = String.format("感谢「%s」赠送的%d个%s",msg.getNn(),msg.getHits()>0?msg.getHits():1, GiftTypeEnum.getGiftName(msg.getGfid()));
                 logger.info("发送礼物消息:{},before size={},after size={}",giftMsg,size,gifts.size());
-                //client.chatmessage(giftMsg);
+                client.chatmessage(giftMsg);
 
             }
         }

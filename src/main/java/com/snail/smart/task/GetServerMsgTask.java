@@ -59,8 +59,8 @@ public class GetServerMsgTask extends Thread {
             msg = String.format("欢迎「%s」来到直播间",userEnterMsg.getNn());
         }
         if(msg != null){
-            logger.info("发送消息：{}",msg);
-            loginClient.chatmessage(msg);
+            //logger.info("发送消息：{}",msg);
+            //loginClient.chatmessage(msg);
         }
 
         return msg;
