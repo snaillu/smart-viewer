@@ -10,7 +10,7 @@ public class User {
     private String uid;
     private String username;
     private String nickname;
-    private boolean email;
+    private String email;
     private String qq;
     private String mobile_phone;
     private String phone_status;
@@ -57,11 +57,11 @@ public class User {
         this.nickname = nickname;
     }
 
-    public boolean isEmail() {
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(boolean email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 

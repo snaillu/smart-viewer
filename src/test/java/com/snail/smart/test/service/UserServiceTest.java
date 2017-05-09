@@ -21,8 +21,8 @@ public class UserServiceTest extends BaseTest {
     @Test
     public void login(){
         UserParam param = new UserParam();
-        param.setUsername("超级蜗牛一号");
-        param.setPassword("19880812");
+        param.setUsername("超级的大蜗牛");
+        param.setPassword("19880812sq");
 
         ServiceResponse<User> result = userService.login(param);
         logger.info("result={}",result);
