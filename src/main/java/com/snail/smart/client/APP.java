@@ -13,8 +13,8 @@ public class APP {
 
     public static void main(String[] args){
         //th000:11017   魅力：468241  infi:255865  ted:259057  傻哥：1408482
-        int roomId = 1408482, userId = 104954726;
-        SmartClient client = new SmartClient(roomId,userId,true);
+        int roomId = 468241, userId = 104954726;
+        SmartClient client = new SmartClient(roomId,userId,false);
 
         GetServerMsgTask task = new GetServerMsgTask(client);
         task.start();

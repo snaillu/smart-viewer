@@ -29,6 +29,9 @@ public class BulletScreenClient extends BaseClient {
     //第三方弹幕协议服务器端口
     private static final int port = 8601;
 
+    private int MAX_FAIL_TIMES = 50;
+    private int CURRENT_FAIL_TIMES = 0;
+
 
 
     public BulletScreenClient(int roomId, int groupId){
@@ -104,7 +107,13 @@ public class BulletScreenClient extends BaseClient {
 
             Decoder decoder = new Decoder(StringUtils.substring(msg,msg.lastIndexOf("type@=")));
             result.add(decoder);
+            CURRENT_FAIL_TIMES = 0;
         }catch (Exception e){
+            //if failed times reach the max times then set the server to stop
+            CURRENT_FAIL_TIMES++;
+            if(CURRENT_FAIL_TIMES>MAX_FAIL_TIMES){
+                this.isReady = false;
+            }
             logger.error("get server msg error,msg={}",e);
         }
 
