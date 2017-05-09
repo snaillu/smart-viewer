@@ -23,19 +23,12 @@ import java.util.Random;
 public class ServerLoginClient extends BaseClient {
     private static final Logger logger = LoggerFactory.getLogger(ServerLoginClient.class);
 
-    private static ServerLoginClient instance;
-
-
-    public static ServerLoginClient getInstance(){
-        if(instance == null){
-            instance = new ServerLoginClient();
-        }
-
-        return instance;
+    public ServerLoginClient(int roomId, int userId){
+        init(roomId,userId);
     }
 
     //初始化弹幕
-    public void init(int roomId, int userId){
+    private void init(int roomId, int userId){
         connectServer();
         validateLoginReq(roomId,userId);
         qtlnq();

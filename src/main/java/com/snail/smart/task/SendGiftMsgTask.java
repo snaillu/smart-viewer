@@ -1,6 +1,7 @@
 package com.snail.smart.task;
 
 import com.snail.smart.client.ServerLoginClient;
+import com.snail.smart.client.SmartClient;
 import com.snail.smart.enums.GiftTypeEnum;
 import com.snail.smart.utils.Utils;
 import com.snail.smart.vo.GiftMsg;
@@ -21,16 +22,20 @@ public class SendGiftMsgTask extends Thread  {
 
     private static SendGiftMsgTask instance;
 
+    private static SmartClient smartClient;
+
     //gift container
     private static Map<Integer,GiftMsg> gifts = new ConcurrentHashMap<Integer, GiftMsg>();
 
     private static final int GIFT_SLEEP_TIME = 10000;
 
-    private SendGiftMsgTask(){}
+    private SendGiftMsgTask(SmartClient smartClient){
+        this.smartClient = smartClient;
+    }
 
-    public static SendGiftMsgTask getInstance(){
+    public static SendGiftMsgTask getInstance(SmartClient smartClient){
         if(instance == null){
-            instance = new SendGiftMsgTask();
+            instance = new SendGiftMsgTask(smartClient);
         }
 
         return instance;
@@ -38,8 +43,7 @@ public class SendGiftMsgTask extends Thread  {
 
     @Override
     public void run() {
-        ServerLoginClient client = ServerLoginClient.getInstance();
-        while (client.isReady()){
+        while (smartClient.isReady()){
             Utils.sleep(GIFT_SLEEP_TIME);
             if(CollectionUtils.isEmpty(gifts)){
                 return;
@@ -52,14 +56,14 @@ public class SendGiftMsgTask extends Thread  {
                 it.remove();
                 String giftMsg = String.format("感谢「%s」赠送的%d个%s",msg.getNn(),msg.getHits()>0?msg.getHits():1, GiftTypeEnum.getGiftName(msg.getGfid()));
                 logger.info("发送礼物消息:{},before size={},after size={}",giftMsg,size,gifts.size());
-                client.chatmessage(giftMsg);
+                smartClient.sendChatMsg(giftMsg);
 
             }
         }
 
     }
 
-    public void addGift(GiftMsg giftMsg){
+    public static void addGift(GiftMsg giftMsg){
         gifts.put(giftMsg.getUid(),giftMsg);
     }
 }

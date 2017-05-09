@@ -2,6 +2,7 @@ package com.snail.smart.task;
 
 import com.snail.smart.client.BulletScreenClient;
 import com.snail.smart.client.ServerLoginClient;
+import com.snail.smart.client.SmartClient;
 import com.snail.smart.msg.Decoder;
 import com.snail.smart.msg.MsgParser;
 import com.snail.smart.vo.GiftMsg;
@@ -19,22 +20,21 @@ import java.util.List;
 public class GetServerMsgTask extends Thread {
     private static final Logger logger = LoggerFactory.getLogger(GetServerMsgTask.class);
 
-    private ServerLoginClient loginClient;
+    private SmartClient client;
 
-    public GetServerMsgTask(ServerLoginClient loginClient){
-        this.loginClient = loginClient;
+    public GetServerMsgTask(SmartClient client){
+        this.client = client;
     }
 
     @Override
     public void run() {
-        BulletScreenClient client = BulletScreenClient.getInstance();
         while (client.isReady()){
-            List<Decoder> msgList = client.getServerMsg();
-            sendMsg(msgList);
+            List<Decoder> msgList = client.getBulletMsg();
+            parseMsg(msgList);
         }
     }
 
-    private <T> void  sendMsg(List<Decoder> msgList){
+    private <T> void  parseMsg(List<Decoder> msgList){
         if(CollectionUtils.isEmpty(msgList)){
             return;
         }
@@ -50,16 +50,13 @@ public class GetServerMsgTask extends Thread {
         String msg = null;
         if("dgb".equals(type)){
             GiftMsg giftMsg = (GiftMsg)t;
-            SendGiftMsgTask task = SendGiftMsgTask.getInstance();
-            //task.addGift(giftMsg);
+            if(client.isSendMsg()){
+                SendGiftMsgTask.addGift(giftMsg);
+            }
             //msg = String.format("感谢%s赠送的%d个%s",giftMsg.getNn(),giftMsg.getHits(), GiftTypeEnum.getGiftName(giftMsg.getGfid()));
         }else if("uenter".equals(type)){
             UserEnterMsg userEnterMsg = (UserEnterMsg)t;
             msg = String.format("欢迎「%s」来到直播间",userEnterMsg.getNn());
-        }
-        if(msg != null){
-            //logger.info("发送消息：{}",msg);
-            //loginClient.chatmessage(msg);
         }
 
         return msg;

@@ -23,8 +23,6 @@ import java.util.Map;
 public class BulletScreenClient extends BaseClient {
     private static final Logger logger = LoggerFactory.getLogger(BulletScreenClient.class);
 
-    private static BulletScreenClient instance;
-
     //第三方弹幕协议服务器地址
     private static final String hostName = "openbarrage.douyutv.com";
 
@@ -33,16 +31,12 @@ public class BulletScreenClient extends BaseClient {
 
 
 
-    public static BulletScreenClient getInstance(){
-        if(instance == null){
-            instance = new BulletScreenClient();
-        }
-
-        return instance;
+    public BulletScreenClient(int roomId, int groupId){
+        init(roomId,groupId);
     }
 
     //初始化弹幕
-    public void init(int roomId, int groupId){
+    private void init(int roomId, int groupId){
         connectServer();
         loginRoom(roomId);
         joinGroup(roomId,groupId);
