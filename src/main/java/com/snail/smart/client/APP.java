@@ -7,6 +7,8 @@ import com.snail.smart.task.ServerKeepliveTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedOutputStream;
+
 /**
  * @author snail
  * @create 2017/05/08
@@ -16,22 +18,14 @@ public class APP {
 
     public static void main(String[] args){
         //th000:11017   魅力：468241  infi:255865  ted:259057  傻哥：1408482
-        int roomId = 1408482, groupId=-9999;
+        int roomId = 1408482, groupId=-9999, userId = 104954726;
 
         ServerLoginClient loginClient = ServerLoginClient.getInstance();
-        loginClient.init(roomId);
-//        loginClient.chatmessage("蜗牛");
-//        sleep(3000);
+        loginClient.init(roomId,userId);
 
 
         BulletScreenClient client = BulletScreenClient.getInstance();
         client.init(roomId,groupId);
-
-        SendGiftMsgTask giftMsgTask = SendGiftMsgTask.getInstance();
-        giftMsgTask.start();
-
-        KeepliveTask keeplive = new KeepliveTask();
-        keeplive.start();
 
         GetServerMsgTask getMsg = new GetServerMsgTask(loginClient);
         getMsg.start();

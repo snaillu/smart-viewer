@@ -2,7 +2,6 @@ package com.snail.smart.task;
 
 import com.snail.smart.client.BulletScreenClient;
 import com.snail.smart.client.ServerLoginClient;
-import com.snail.smart.enums.GiftTypeEnum;
 import com.snail.smart.msg.Decoder;
 import com.snail.smart.msg.MsgParser;
 import com.snail.smart.vo.GiftMsg;
@@ -29,7 +28,7 @@ public class GetServerMsgTask extends Thread {
     @Override
     public void run() {
         BulletScreenClient client = BulletScreenClient.getInstance();
-        while (client.getIsReady()){
+        while (client.isReady()){
             List<Decoder> msgList = client.getServerMsg();
             sendMsg(msgList);
         }

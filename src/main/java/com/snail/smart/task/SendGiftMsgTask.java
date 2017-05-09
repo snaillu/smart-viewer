@@ -1,6 +1,5 @@
 package com.snail.smart.task;
 
-import com.snail.smart.client.BulletScreenClient;
 import com.snail.smart.client.ServerLoginClient;
 import com.snail.smart.enums.GiftTypeEnum;
 import com.snail.smart.utils.Utils;

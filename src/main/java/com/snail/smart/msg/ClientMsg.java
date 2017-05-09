@@ -68,14 +68,14 @@ public class ClientMsg {
     }
 
     //step one
-    public static byte[] validateLoginReq(int roomId){
+    public static byte[] validateLoginReq(int roomId,int userId){
         Encoder encoder = new Encoder("loginreq");
 
         String devId = getDevId();
         String rt = String.valueOf(System.currentTimeMillis()/1000);
         String vk = StringUtils.md5(rt+"7oE9nPEG9xXV69phU31FYCLUagKeYtsF"+devId);
 
-        encoder.addParam("username","104954726");
+        encoder.addParam("username",userId);
         encoder.addParam("ct",0);
         encoder.addParam("password","");
         encoder.addParam("roomid",roomId);

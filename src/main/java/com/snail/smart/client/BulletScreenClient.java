@@ -3,6 +3,7 @@ package com.snail.smart.client;
 import com.snail.smart.msg.ClientMsg;
 import com.snail.smart.msg.Decoder;
 import com.snail.smart.msg.MsgParser;
+import com.snail.smart.task.KeepliveTask;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +20,7 @@ import java.util.Map;
  * @author snail
  * @create 2017/04/26
  */
-public class BulletScreenClient {
+public class BulletScreenClient extends BaseClient {
     private static final Logger logger = LoggerFactory.getLogger(BulletScreenClient.class);
 
     private static BulletScreenClient instance;
@@ -30,16 +31,7 @@ public class BulletScreenClient {
     //第三方弹幕协议服务器端口
     private static final int port = 8601;
 
-    //设置字节获取buffer的最大值
-    private static final int MAX_BUFFER_LENGTH = 4096;
 
-    //弹幕是否初始化完成
-    private boolean isReady = false;
-
-    //socket相关配置
-    private Socket sock;
-    private BufferedOutputStream bos;
-    private BufferedInputStream bis;
 
     public static BulletScreenClient getInstance(){
         if(instance == null){
@@ -54,8 +46,11 @@ public class BulletScreenClient {
         connectServer();
         loginRoom(roomId);
         joinGroup(roomId,groupId);
-
         isReady = true;
+
+        //start keep live task
+        KeepliveTask task = new KeepliveTask(this);
+        task.start();
     }
 
     //连接弹幕服务器
@@ -81,19 +76,8 @@ public class BulletScreenClient {
         byte[] loginRep = ClientMsg.getLoginReqMsg(roomId);
 
         try{
-            //发送登录房间信息
-            bos.write(loginRep,0,loginRep.length);
-            bos.flush();
-
-            String loginMsg = readMsg();
-            Decoder decoder = new Decoder(loginMsg);
-            printMsg(decoder.getResult());
-
-            if(true){
-                logger.debug("login room success!");
-            }else {
-                logger.error("login room failed!");
-            }
+            sendMsg(loginRep);
+            logger.debug("login room success,roomId={}",roomId);
         }catch (Exception e){
             logger.error("login room error, roomId={}, msg={}",roomId,e);
         }
@@ -103,58 +87,12 @@ public class BulletScreenClient {
         byte[] groupReq = ClientMsg.getJoinGroupMsg(roomId,groupId);
 
         try{
-            bos.write(groupReq,0,groupReq.length);
-            bos.flush();
+            sendMsg(groupReq);
 
             logger.debug("join group success!");
         }catch (Exception e){
             logger.error("join group error, roomId={}, groupId={}, msg={}",roomId,groupId,e);
         }
-    }
-
-    public void keepLive(){
-        byte[] keepLiveReq = ClientMsg.getKeepLiveMsg((int)(System.currentTimeMillis()/1000));
-
-        try{
-            bos.write(keepLiveReq,0,keepLiveReq.length);
-            bos.flush();
-
-            logger.debug("send keep live request success!");
-        }catch (Exception e){
-            logger.error("keep live error, msg={}",e);
-        }
-    }
-
-    private void sendMsg(byte[] req){
-        try{
-            //发送登录房间信息
-            bos.write(req,0,req.length);
-            bos.flush();
-
-        }catch (Exception e){
-            logger.error("login room error, msg={}",e);
-        }
-    }
-
-    //read msg from server
-    private String readMsg(){
-        String result = "";
-
-        try{
-            byte[] recvByte = new byte[MAX_BUFFER_LENGTH];
-            int recvLength = bis.read(recvByte,0,recvByte.length);
-            if(recvLength<1){
-                return result;
-            }
-            byte[] realByte = new byte[recvLength];
-            System.arraycopy(recvByte,0,realByte,0,recvLength);
-
-            result = new String(realByte,12,realByte.length-12);
-        }catch (Exception e){
-            logger.error("read msg error,msg={}",e);
-        }
-
-        return result;
     }
 
     public List<Decoder> getServerMsg(){
@@ -177,13 +115,5 @@ public class BulletScreenClient {
         }
 
         return result;
-    }
-
-    private void printMsg(Map<String,Object> params){
-        MsgParser.parser(params);
-    }
-
-    public boolean getIsReady(){
-        return isReady;
     }
 }

@@ -1,5 +1,6 @@
 package com.snail.smart.task;
 
+import com.snail.smart.client.BaseClient;
 import com.snail.smart.client.BulletScreenClient;
 import com.snail.smart.client.ServerLoginClient;
 import org.slf4j.Logger;
@@ -12,14 +13,17 @@ import org.slf4j.LoggerFactory;
 public class KeepliveTask extends Thread {
     private static Logger logger = LoggerFactory.getLogger(KeepliveTask.class);
 
+    private BaseClient baseClient;
+
+    public KeepliveTask(BaseClient baseClient){
+        this.baseClient = baseClient;
+    }
+
     @Override
     public void run() {
-        BulletScreenClient client = BulletScreenClient.getInstance();
-        ServerLoginClient loginClient = ServerLoginClient.getInstance();
 
-        while (client.getIsReady()){
-            client.keepLive();
-            loginClient.keepLive();
+        while (baseClient.isReady()){
+            baseClient.keepLive();
             goSleep(45000);
         }
     }

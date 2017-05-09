@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.net.Socket;
 
 /**
  * @author snail
@@ -17,8 +18,13 @@ public class BaseClient {
     //设置字节获取buffer的最大值
     private static final int MAX_BUFFER_LENGTH = 4096;
 
+    //socket相关配置
+    protected Socket sock;
     protected BufferedOutputStream bos;
     protected BufferedInputStream bis;
+
+    //是否初始化完成
+    protected boolean isReady = false;
 
     protected void sendMsg(byte[] req){
         try{
@@ -63,5 +69,9 @@ public class BaseClient {
         }catch (Exception e){
             logger.error("keep live error, msg={}",e);
         }
+    }
+
+    public boolean isReady() {
+        return isReady;
     }
 }

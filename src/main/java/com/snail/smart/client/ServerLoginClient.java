@@ -3,6 +3,7 @@ package com.snail.smart.client;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.snail.smart.msg.ClientMsg;
+import com.snail.smart.task.KeepliveTask;
 import com.snail.smart.vo.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,12 +25,6 @@ public class ServerLoginClient extends BaseClient {
 
     private static ServerLoginClient instance;
 
-    //弹幕是否初始化完成
-    private boolean isReady = false;
-
-    //socket相关配置
-    private Socket sock;
-
 
     public static ServerLoginClient getInstance(){
         if(instance == null){
@@ -40,18 +35,20 @@ public class ServerLoginClient extends BaseClient {
     }
 
     //初始化弹幕
-    public void init(int roomId){
+    public void init(int roomId, int userId){
         connectServer();
-        validateLoginReq(roomId);
+        validateLoginReq(roomId,userId);
         qtlnq();
-        //chatmessage();
-
         isReady = true;
+
+        //start keep live task
+        KeepliveTask task = new KeepliveTask(this);
+        task.start();
     }
 
     //step one
-    private void validateLoginReq(int roomId){
-        byte[] validateLoginReq = ClientMsg.validateLoginReq(roomId);
+    private void validateLoginReq(int roomId, int userid){
+        byte[] validateLoginReq = ClientMsg.validateLoginReq(roomId,userid);
 
         sendMsg(validateLoginReq);
         String loginMsg = readMsg();
@@ -113,12 +110,4 @@ public class ServerLoginClient extends BaseClient {
         return result;
     }
 
-    public boolean isReady() {
-        return isReady;
-    }
-
-    public static void main(String[] args){
-        List<Server> result = getServerList();
-        logger.info("result={}",result);
-    }
 }
