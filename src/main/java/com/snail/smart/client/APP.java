@@ -2,6 +2,8 @@ package com.snail.smart.client;
 
 import com.snail.smart.task.GetServerMsgTask;
 import com.snail.smart.task.KeepliveTask;
+import com.snail.smart.task.SendGiftMsgTask;
+import com.snail.smart.task.ServerKeepliveTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,8 +27,14 @@ public class APP {
         BulletScreenClient client = BulletScreenClient.getInstance();
         client.init(roomId,groupId);
 
+        SendGiftMsgTask giftMsgTask = SendGiftMsgTask.getInstance();
+        giftMsgTask.start();
+
         KeepliveTask keeplive = new KeepliveTask();
         keeplive.start();
+
+        ServerKeepliveTask serverKeepliveTask = new ServerKeepliveTask();
+        serverKeepliveTask.start();
 
         GetServerMsgTask getMsg = new GetServerMsgTask(loginClient);
         getMsg.start();

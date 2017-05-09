@@ -10,10 +10,10 @@ import java.util.Map;
  */
 @MsgType(type = "聊天消息")
 public class ChatMsg {
+    private String txt;
     private int uid;
     private String nn;
     private String type;
-    private String txt;
     private int rid;
 
     public int getUid() {
@@ -59,10 +59,10 @@ public class ChatMsg {
     @Override
     public String toString() {
         return "ChatMsg{" +
-                "uid=" + uid +
+                "txt='" + txt + '\'' +
+                ", uid=" + uid +
                 ", nn='" + nn + '\'' +
                 ", type='" + type + '\'' +
-                ", txt='" + txt + '\'' +
                 ", rid=" + rid +
                 '}';
     }

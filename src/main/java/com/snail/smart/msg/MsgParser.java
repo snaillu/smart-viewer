@@ -23,7 +23,7 @@ public class MsgParser {
         }else{
             Class cls = t.getClass();
             MsgType msgType = (MsgType) cls.getAnnotation(MsgType.class);
-            logger.info("{}:{}",msgType.type(),content);
+            logger.info("{}:{}",msgType.type(),t);
         }
 
         return t;

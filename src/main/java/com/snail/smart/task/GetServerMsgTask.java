@@ -51,10 +51,12 @@ public class GetServerMsgTask extends Thread {
         String msg = null;
         if("dgb".equals(type)){
             GiftMsg giftMsg = (GiftMsg)t;
-            msg = String.format("感谢%s赠送的%d个%s",giftMsg.getNn(),giftMsg.getHits(), GiftTypeEnum.getGiftName(giftMsg.getGfid()));
+            SendGiftMsgTask task = SendGiftMsgTask.getInstance();
+            task.addGift(giftMsg);
+            //msg = String.format("感谢%s赠送的%d个%s",giftMsg.getNn(),giftMsg.getHits(), GiftTypeEnum.getGiftName(giftMsg.getGfid()));
         }else if("uenter".equals(type)){
             UserEnterMsg userEnterMsg = (UserEnterMsg)t;
-            msg = String.format("欢迎%s来到直播间",userEnterMsg.getNn());
+            msg = String.format("欢迎「%s」来到直播间",userEnterMsg.getNn());
         }
         if(msg != null){
             logger.info("发送消息：{}",msg);

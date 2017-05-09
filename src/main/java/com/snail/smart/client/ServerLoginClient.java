@@ -69,7 +69,7 @@ public class ServerLoginClient extends BaseClient {
         byte[] chatMsgReq = ClientMsg.chatmessage(text);
         sendMsg(chatMsgReq);
         String sendMsg = readMsg();
-        logger.info("send chat msg result={}",sendMsg);
+        //logger.info("send chat msg result={}",sendMsg);
     }
 
     //连接弹幕服务器
@@ -113,6 +113,9 @@ public class ServerLoginClient extends BaseClient {
         return result;
     }
 
+    public boolean isReady() {
+        return isReady;
+    }
 
     public static void main(String[] args){
         List<Server> result = getServerList();
