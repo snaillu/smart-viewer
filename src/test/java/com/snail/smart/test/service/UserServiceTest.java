@@ -28,4 +28,17 @@ public class UserServiceTest extends BaseTest {
         logger.info("result={}",result);
     }
 
+    @Test
+    public void batchLogin(){
+        String userName = "超级蜗牛%04d",pwd = "19880812";
+        for(int i=1;i<11;i++){
+            UserParam param = new UserParam();
+            param.setUsername(String.format(userName,i));
+            param.setPassword(pwd);
+
+            ServiceResponse<User> result = userService.login(param);
+            System.out.println(String.format("account%04d=%s",i,result.getResult().getUid()));
+        }
+    }
+
 }

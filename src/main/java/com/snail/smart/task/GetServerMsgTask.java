@@ -57,6 +57,12 @@ public class GetServerMsgTask extends Thread {
         }else if("uenter".equals(type)){
             UserEnterMsg userEnterMsg = (UserEnterMsg)t;
             msg = String.format("欢迎「%s」来到直播间",userEnterMsg.getNn());
+            if(client.isSendMsg()){
+                if(userEnterMsg.getLevel()>=20){
+                    logger.info("**************发送进入房间消息：{}",msg);
+                    client.sendChatMsg(msg);
+                }
+            }
         }
 
         return msg;
